@@ -5,7 +5,7 @@ const app = express();
 // Lista de e-mails com acesso liberado
 const emailsComAcesso = [
   "alceuacosta@gmail.com",
-  "exemplo2@gmail.com",
+  "samuraidaacupuntura@gmail.com",
   "exemplo3@gmail.com"
 ];
 
