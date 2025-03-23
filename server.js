@@ -18,7 +18,7 @@ app.post("/verificar-acesso", (req, res) => {
   const { email } = req.body;
 
   if (emailsComAcesso.includes(email.toLowerCase().trim())) {
-   res.redirect("https://chat.openai.com/gpts/g-8sC9wzqJZ"); // Link do seu assistente
+   res.redirect("https://chatgpt.com/g/g-67dcbe58a18c81919e2fc5720d982394-jornada-do-samurai-mtc"); // Link do seu assistente
   } else {
     res.send(`
       <h2>Acesso negado</h2>
