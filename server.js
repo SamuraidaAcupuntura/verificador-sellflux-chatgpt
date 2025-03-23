@@ -15,7 +15,7 @@ app.post("/verificar-acesso", async (req, res) => {
 
   try {
     // Monta a URL do webhook com o e-mail na query string
-    const webhookUrl = `https://webhook.sellflux.app/webhook/lead/676bb4e366188619b98ffeaf629cbed9?email=${encodeURIComponent(email)}`;
+    const webhookUrl = `https://webhook.sellflux.app/webhook/lead/2f5079211e47aae637f5b6b0ef0532df?email=teste@gmail.com?email=${encodeURIComponent(email)}`;
 
     // Envia a requisição para o webhook da Sellflux
     const resposta = await fetch(webhookUrl);
