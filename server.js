@@ -6,7 +6,7 @@ const app = express();
 const emailsComAcesso = [
   "alceuacosta@gmail.com",
   "samuraidaacupuntura@gmail.com",
-  "exemplo3@gmail.com"
+  "paulocosta@samuraidaacupuntura.com.br"
 ];
 
 app.use(express.json());
