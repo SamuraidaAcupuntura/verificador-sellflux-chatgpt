@@ -4,27 +4,27 @@ const path = require("path");
 
 const app = express();
 
-// Configuração para ler o corpo das requisições e servir arquivos estáticos
+// Configurações básicas do servidor
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public")); // Mostra o formulário HTML da pasta 'public'
+app.use(express.static("public")); // Serve o index.html da pasta 'public'
 
-// Rota para processar o formulário
+// Rota para verificar acesso
 app.post("/verificar-acesso", async (req, res) => {
   const { email } = req.body;
 
   try {
-    // Monta a URL do webhook com o e-mail na query string
-    const webhookUrl = `https://webhook.sellflux.app/webhook/lead/2f5079211e47aae637f5b6b0ef0532df?email=teste@gmail.com?email=${encodeURIComponent(email)}`;
+    // URL do webhook com o e-mail do usuário
+    const webhookUrl = `https://webhook.sellflux.app/webhook/lead/676bb4e366188619b98ffeaf629cbed9?email=${encodeURIComponent(email)}`;
 
-    // Envia a requisição para o webhook da Sellflux
     const resposta = await fetch(webhookUrl);
     const resultado = await resposta.json();
 
-    // Verifica se o usuário tem acesso
+    // Se o usuário tiver acesso, redireciona para o assistente
     if (resultado.acesso) {
-      res.redirect("https://chat.openai.com/gpts/editor/g-8sC9wzqJZ"); // Redireciona pro seu assistente
+      res.redirect("https://chat.openai.com/gpts/editor/g-8sC9wzqJZ");
     } else {
+      // Se não tiver acesso, mostra mensagem de bloqueio
       res.send(`
         <h2>Acesso negado</h2>
         <p>Compra não ativa ou não encontrada.</p>
@@ -37,6 +37,6 @@ app.post("/verificar-acesso", async (req, res) => {
   }
 });
 
-// Inicializa o servidor na porta 3000 (ou a que o Render definir)
+// Inicializa o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Servidor rodando na porta " + PORT));
