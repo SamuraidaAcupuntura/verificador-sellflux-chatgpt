@@ -3,24 +3,27 @@ const fetch = require("node-fetch");
 const path = require("path");
 
 const app = express();
+
+// Configuração para ler o corpo das requisições e servir arquivos estáticos
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static("public")); // Mostra o formulário HTML da pasta 'public'
 
+// Rota para processar o formulário
 app.post("/verificar-acesso", async (req, res) => {
   const { email } = req.body;
 
   try {
-    const resposta = await fetch("https://master.sellflux.com/api/hooks/SEU_WEBHOOK_AQUI", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    });
+    // Monta a URL do webhook com o e-mail na query string
+    const webhookUrl = `https://webhook.sellflux.app/webhook/lead/676bb4e366188619b98ffeaf629cbed9?email=${encodeURIComponent(email)}`;
 
+    // Envia a requisição para o webhook da Sellflux
+    const resposta = await fetch(webhookUrl);
     const resultado = await resposta.json();
 
+    // Verifica se o usuário tem acesso
     if (resultado.acesso) {
-      res.redirect("https://chat.openai.com/gpts/editor/g-8sC9wzqJZ"); // link do seu assistente
+      res.redirect("https://chat.openai.com/gpts/editor/g-8sC9wzqJZ"); // Redireciona pro seu assistente
     } else {
       res.send(`
         <h2>Acesso negado</h2>
@@ -29,10 +32,11 @@ app.post("/verificar-acesso", async (req, res) => {
       `);
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Erro ao verificar acesso.");
+    console.error("Erro ao verificar acesso:", err);
+    res.status(500).send("Erro interno ao verificar acesso.");
   }
 });
 
+// Inicializa o servidor na porta 3000 (ou a que o Render definir)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Servidor rodando na porta " + PORT));
