@@ -14,17 +14,15 @@ app.post("/verificar-acesso", async (req, res) => {
   const { email } = req.body;
 
   try {
-    // URL do webhook com o e-mail do usuário
-   const webhookUrl = `https://webhook.sellflux.app/webhook/lead/2f5079211e47aae637f5b6b0ef0532df?email=${encodeURIComponent(email)}`;
+    // NOVO WEBHOOK com o e-mail como parâmetro
+    const webhookUrl = `https://webhook.sellflux.app/webhook/lead/2f5079211e47aae637f5b6b0ef0532df?email=${encodeURIComponent(email)}`;
 
     const resposta = await fetch(webhookUrl);
     const resultado = await resposta.json();
 
-    // Se o usuário tiver acesso, redireciona para o assistente
     if (resultado.acesso) {
       res.redirect("https://chat.openai.com/gpts/editor/g-8sC9wzqJZ");
     } else {
-      // Se não tiver acesso, mostra mensagem de bloqueio
       res.send(`
         <h2>Acesso negado</h2>
         <p>Compra não ativa ou não encontrada.</p>
